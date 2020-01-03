@@ -1,0 +1,23 @@
+{
+  "comments": false,
+  "env": {
+    "main": {
+      "presets": [["es2015", { "modules": false }]]
+    },
+    "renderer": {
+      "presets": [["es2015", { "modules": false }]]
+    },
+    "web": {
+      "presets": [["es2015", { "modules": false }]]
+    }
+  },
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ]
+}
