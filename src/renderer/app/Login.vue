@@ -17,9 +17,8 @@
 </template>
 
 <script>
-import { Button, Input } from 'element-ui'
-import { createNamespacedHelpers } from 'vuex'
-const { mapActions } = createNamespacedHelpers('User')
+import { Button, Input, Loading } from 'element-ui'
+
 export default {
   name: 'login',
   components: {
@@ -29,22 +28,18 @@ export default {
   data () {
     return {
       username: '18993296144',
-      password: '02FAA9661'
+      password: '02FAA966'
     }
   },
   methods: {
-    ...mapActions(['attemptLogin']),
     async login () {
+      let loadingInstance = Loading.service({ fullscreen: true })
       const { username, password } = this
-      try {
-        await this.attemptLogin({ username, password })
+      await this.$store.dispatch('attemptLogin', { username, password }).then((data) => {
         this.$message.success('欢迎回来~')
-        this.$router.push({ name: 'home' })
-      } catch (e) {
-        if (e.status !== 422) {
-          this.$message.error('账号密码错误！')
-        }
-      }
+        this.$router.push({ name: 'landing-page' })
+        loadingInstance.close()
+      })
     }
   }
 }

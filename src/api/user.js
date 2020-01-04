@@ -13,3 +13,5 @@ export const postLogin = ({ username, password }) => {
     scope: '*'
   })
 }
+
+export const loadUserData = () => http.get('api/v1/auth/me').catch(() => {})

@@ -1,6 +1,8 @@
 
-import user from '../../../api/user'
+import * as user from '../../../api/user'
 import { isEmpty } from 'lodash'
+import { setToken as httpSetToken } from '../../../utils/http'
+import localforage from 'localforage'
 
 const state = {
   user: {},
@@ -21,13 +23,15 @@ const mutations = {
 
 const actions = {
   attemptLogin ({ dispatch }, payload) {
-    user
+    return user
       .postLogin(payload)
       .then(data => {
-        dispatch('setToken', data.access_token)
-        return Promise.resolve()
+        dispatch('setToken', data.data.access_token)
+        httpSetToken(data.data.access_token)
+        localforage.setItem('APP_USER_TOKEN', data.data.access_token)
+        return Promise.resolve(data)
       })
-    // .then(() => dispatch('loadUser'))
+      .then(() => dispatch('loadUser'))
   },
   setToken ({ commit }, payload) {
     // prevent if payload is a object
@@ -35,6 +39,17 @@ const actions = {
     // Commit the mutations
     commit(SET_TOKEN, token)
     return Promise.resolve(token) // keep promise chain
+  },
+  loadUser ({ dispatch }) {
+    return user
+      .loadUserData()
+      // store user's data
+      .then(user => dispatch('setUser', user))
+  },
+  setUser ({ commit }, user) {
+    // Commit the mutations
+    commit(SET_USER, user)
+    return Promise.resolve(user) // keep promise chain
   }
 }
 

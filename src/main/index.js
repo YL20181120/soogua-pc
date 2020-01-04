@@ -23,7 +23,8 @@ function createWindow () {
     height: 600,
     useContentSize: true,
     width: 1200,
-    resizable: true
+    resizable: true,
+    titleBarStyle: 'hidden'
   })
 
   mainWindow.loadURL(winURL)

@@ -5,10 +5,12 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import { Message } from 'element-ui'
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = http
 Vue.config.productionTip = false
-
+Vue.prototype.$message = Message
 /* eslint-disable no-new */
 new Vue({
   components: { App },
