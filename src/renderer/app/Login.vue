@@ -31,14 +31,21 @@ export default {
       password: '02FAA966'
     }
   },
+  computed: {
+    currentUser () {
+      return this.$store.getters.currentUser
+    }
+  },
   methods: {
     async login () {
       let loadingInstance = Loading.service({ fullscreen: true })
       const { username, password } = this
       await this.$store.dispatch('attemptLogin', { username, password }).then((data) => {
-        this.$message.success('欢迎回来~')
-        this.$router.push({ name: 'landing-page' })
+        this.$message.success('Welcome back ~')
+        this.$router.push({ name: 'main.message' })
         loadingInstance.close()
+      }).then(() => {
+        // this.connect()
       })
     }
   }

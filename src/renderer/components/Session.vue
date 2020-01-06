@@ -3,7 +3,9 @@
     <div class="message-box">
       <div class='item' v-for="item in items" :key="item.id">
         <div class='avatar'>
-          <img :src='item.avatar' alt=''>
+          <el-avatar :size="50" :src="item.avatar" shape="square">
+            <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+          </el-avatar>
         </div>
         <div class="message">
           <div class="nickname">
@@ -22,9 +24,12 @@
 </template>
 
 <script>
+  import { Avatar } from 'element-ui'
   export default {
     name: 's-session',
-    components: {},
+    components: {
+      [Avatar.name]: Avatar
+    },
     data () {
       return {
         items: [
@@ -738,6 +743,7 @@
 .session{
   height: 100vh;
   min-width: 300px;
+  width: 300px;
   border-right: 1px solid #ddd;
   overflow-x: scroll;
   .message-box{

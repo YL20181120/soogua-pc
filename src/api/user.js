@@ -14,4 +14,10 @@ export const postLogin = ({ username, password }) => {
   })
 }
 
+export const postLogout = () => http.post('api/v1/auth/logout', {}).catch(() => {})
+
 export const loadUserData = () => http.get('api/v1/auth/me').catch(() => {})
+
+export const getUserFriends = () => http.get('api/v1/user/friends')
+
+export const getUserApplies = () => http.get('api/v1/user/applies?include=user&fields[user]=id,nickname,avatar,birthday,from')

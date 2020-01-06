@@ -10,10 +10,19 @@
   }
 </script>
 
-<style>
-  @import url('//at.alicdn.com/t/font_1597067_tygz2gi43ac.css');
+<style lang="less">
+  @import url('./assets/fonts/iconfont/iconfont.css');
   * {
     margin: 0;
     padding: 0;
+  }
+  .el-avatar {
+    img {
+      width: 100%;
+    }
+  }
+  .dev-border {
+    border: 1px dashed red;
+    box-sizing: border-box;
   }
 </style>

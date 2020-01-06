@@ -1,5 +1,5 @@
 import { Message } from 'element-ui'
-
+import router from '../../renderer/router'
 export default http => {
   // 请求拦截
   http.interceptors.request.use(
@@ -33,9 +33,11 @@ export default http => {
           Message.error(error.response.data.message || '您没有此操作权限！')
           break
         case 401:
-          // if (window.location.pathname !== '/auth/login') {
-          //   window.location.href = '/auth/login'
-          // }
+          if (window.location.pathname !== '/auth/login') {
+            router.push({
+              name: 'auth.login'
+            })
+          }
           break
         case 500:
         case 501:

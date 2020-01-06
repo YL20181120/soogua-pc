@@ -1,71 +1,46 @@
 <template>
   <div class="nav">
-    <div class="user" @click="showUserInfo=!showUserInfo">
+    <div class="user" @click="$store.dispatch('toggleShowUserInfo')">
       <div class="avatar">
-        <img
-          :src="user.data.user.avatar"
-          alt=""
-        >
+        <el-avatar :size="50" :src="user.data.user.avatar" shape="square">
+          <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+        </el-avatar>
       </div>
     </div>
-    <!-- User Info Box -->
-    <transition name="el-fade-in-linear">
-      <div class="user-info" v-if="showUserInfo">
-        <div class="header">
-          <div class="username">
-            <h4>{{ user.data.user.nickname }}</h4>
-            <h5>{{ user.data.user.sign }}</h5>
-          </div>
-          <div class="avatar">
-            <img
-              :src="user.data.user.avatar"
-              alt=""
-            >
-          </div>
-        </div>
-
-        <div class="divider"></div>
-        
-        <div class="other-info">
-          <div class="item">
-            <label>Birthday: </label> {{ user.data.user.birthday }}
-          </div>
-          <div class="item">
-            <label>From: </label> {{ user.data.user.from }}
-          </div>
-          <div class="item">
-            <label>Constellation: </label> {{ user.data.user.constellation }}
-          </div>
-          <div class="item">
-            <label>Invite Code: </label> {{ user.data.user.invite_code }}
-          </div>
-        </div>
-
-        <div class="close" @click="showUserInfo=false">
-          <span>
-            <i class="el-icon-close"></i>
-          </span>
-        </div>
-      </div>
-    </transition>
     <div class="nav-box">
-      <div class="nav-item active">
+      <div class="nav-item" :class="{active: getActive('main.message')}" @click="go('main.message')">
         <span>
           <i class="iconfont icon-message"></i>
         </span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" :class="{active: getActive('main.contacts')}" @click="go('main.contacts')">
         <span>
           <i class="iconfont icon-user"></i>
         </span>
       </div>
+      <div class="nav-item" :class="{active: getActive('main.contents')}" @click="go('main.contents')">
+        <span>
+          <i class="iconfont icon-zixun"></i>
+        </span>
+      </div>
+    </div>
+    <div class="nav-menu" @click="logout" slot="reference">
+      <span>
+        <i class="iconfont icon-logout"></i>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import { Avatar, Popover } from 'element-ui'
+
 export default {
   name: 's-nav',
+  components: {
+    [Avatar.name]: Avatar,
+    [Popover.name]: Popover
+  },
   computed: {
     user () {
       return this.$store.getters.currentUser
@@ -73,7 +48,26 @@ export default {
   },
   data () {
     return {
-      showUserInfo: false
+      showUserInfo: true
+    }
+  },
+  methods: {
+    logout () {
+      console.log('logout')
+      this.$store.dispatch('logout').then(() => {
+        this.$message.success('Logout Successful!')
+        this.$router.push({
+          name: 'auth.login'
+        })
+      })
+    },
+    go (router) {
+      this.$router.push({
+        name: router
+      })
+    },
+    getActive (router) {
+      return this.$route.name === router
     }
   }
 }
@@ -98,63 +92,6 @@ export default {
       }
     }
   }
-  .user-info {
-    position: absolute;
-    left: 70px;
-    top: 70px;
-    width: 300px;
-    height: 220px;
-    border: 1px #eee solid;
-    box-sizing: border-box;
-    border-radius: 5px;
-    background-color: white;
-    padding: 30px;
-    .close{
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-    }
-    .header{
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-      justify-content: space-around;
-      .username{
-        h4, h5 {
-          font-weight: 400;
-          line-height: 1.5;
-        }
-        h5{
-          font-size: 12px;
-          color: #999;
-        }
-      }
-      .avatar {
-        img {
-          width: 50px;
-          height: 50px;
-          border-radius: 3px;
-        }
-      }
-    }
-    .divider{
-      height: 2px;
-      background-color: #eee;
-      width: 100%;
-      margin: 15px auto;
-    }
-    .other-info{
-      .item{
-        line-height: 1.5;
-        font-size: 12px;
-        font-weight: 100;
-        label{
-          font-size: 14px;
-        }
-      }
-    }
-  }
   .nav-box{
     margin-top: 40px;
     .nav-item{
@@ -169,6 +106,21 @@ export default {
       i {
         font-size: 30px;
       }
+    }
+  }
+  .nav-menu{
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    i {
+      font-size: 26px;
     }
   }
 }

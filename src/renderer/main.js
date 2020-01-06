@@ -11,6 +11,9 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = http
 Vue.config.productionTip = false
 Vue.prototype.$message = Message
+Vue.prototype.$user = () => {
+  return store.getters.currentUser
+}
 /* eslint-disable no-new */
 new Vue({
   components: { App },

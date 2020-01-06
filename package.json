@@ -19,7 +19,7 @@
     "postinstall": "npm run lint:fix && electron-builder install-app-deps"
   },
   "build": {
-    "productName": "soogua",
+    "productName": "SOOGUA",
     "appId": "com.xuexue.soogua",
     "directories": {
       "output": "build"
@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "axios": "^0.18.1",
+    "easemob-websdk": "^3.0.7",
     "element-ui": "^2.13.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
