@@ -12,7 +12,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
-var nodePath = 'src/__build__'
+var nodePath = 'dist/electron'
 const env = process.env.NODE_ENV
 if(env === "production"){
 	if(process.platform === "darwin"){
