@@ -10,14 +10,14 @@ const router = new Router({
       path: '/',
       name: 'main',
       component: require('@/app/Main').default,
-      redirect: '/im-message',
+      redirect: '/chat/recents',
       meta: {
         requiresAuth: true
       },
       children: [
         {
-          path: '/im-message',
-          name: 'main.message',
+          path: '/chat/recents',
+          name: 'main.chat.recents',
           component: require('@/app/Message').default,
           meta: {
             requiresAuth: true

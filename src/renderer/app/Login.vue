@@ -42,11 +42,22 @@ export default {
       const { username, password } = this
       await this.$store.dispatch('attemptLogin', { username, password }).then((data) => {
         this.$message.success('Welcome back ~')
-        this.$router.push({ name: 'main.message' })
+        this.$router.push({ name: 'main.chat.recents' })
         loadingInstance.close()
       }).then(() => {
-        // this.connect()
+        this.connect()
       })
+    },
+    connect () {
+      /**
+       * 首先构造 sdk 配置信息
+       * param1 为资源存储路径，输入参数
+       * param2 为工作路径，输入参数，日志存储在这里
+       * param3 为 appkey ，输入参数，easemob-demo#chatdemoui 为 DemoAppKey ，需填写自己的 Appkey
+       * param4 为设备 ID ，默认 0
+       * return 配置模块对象
+       */
+      // var emchatconfigs = new easemob.EMChatConfig('.', '.', '1107190322010970#soogua', 0)
     }
   }
 }

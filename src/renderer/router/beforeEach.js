@@ -10,7 +10,7 @@ const beforeEach = (to, from, next) => {
     .dispatch('checkUserToken')
     .then(() => {
       if (vuex.getters.isLogged && to.path.indexOf('auth') > 0) {
-        return next({ name: 'main.message' })
+        return next({ name: 'main.chat.recents' })
       }
       return next()
     })

@@ -12,6 +12,17 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
+var nodePath = "src/__build__"
+const env = process.env.NODE_ENV
+if(env === "production"){
+	if(process.platform === "darwin"){
+		nodePath = "../Resources/app.asar.unpacked/__build__/";
+	}
+	else{
+		nodePath = "resources/app.asar.unpacked/__build__";
+	}
+}
+
 /**
  * List of node_modules to include in webpack bundle
  *
@@ -68,10 +79,6 @@ let rendererConfig = {
         exclude: /node_modules/
       },
       {
-        test: /\.node$/,
-        use: 'node-loader'
-      },
-      {
         test: /\.vue$/,
         use: {
           loader: 'vue-loader',
@@ -112,6 +119,36 @@ let rendererConfig = {
             name: 'fonts/[name]--[folder].[ext]'
           }
         }
+      },
+      {
+        test: /\.node$/,
+        use: [
+          // {
+          // 	loader: "native-ext-loader",
+          // 	options: {
+          // 		rewritePath: path.resolve(__dirname, "dist")
+          // 	}
+          // },
+          {
+            loader: "node-addon-loader",
+            options: {
+              // 加上 basePath 后，最终路径 = output.path join basePath join name
+              // basePath: __dirname,
+              rewritePath: nodePath,
+              // rewritePath: "../Resources/app.asar.unpacked/__build__/",
+              // relativePath: false,
+              name: "addon/[name].[hash:8].[ext]",
+            }
+          }
+          // {
+          // 	loader: "file-loader",
+          // 	options: {
+          // 		outputPath: "addon/",
+          // 		name: "[name].[hash:8].[ext]",
+          // 	// publicPath: "../../app.asar.unpacked/addons"
+          // 	}
+          // }
+        ]
       }
     ]
   },
@@ -135,7 +172,21 @@ let rendererConfig = {
         : false
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.LIB"),
+      force: true,
+      to: "addon/LIBCURL.LIB"
+    }, {
+      from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.DLL"),
+      force: true,
+      to: "addon/LIBCURL.DLL"
+    }, {
+      from: path.resolve(__dirname, "./../src/easemob/easemob/libcrypto.1.0.0.dylib"),
+      force: true,
+      to: "addon/libcrypto.1.0.0.dylib"
+    }]),
+    new webpack.ContextReplacementPlugin(/bindings$/, /^$/)
   ],
   output: {
     filename: '[name].js',
@@ -145,6 +196,8 @@ let rendererConfig = {
   resolve: {
     alias: {
       '@': path.join(__dirname, '../src/renderer'),
+      $easemob: path.join(__dirname, '../src/easemob'),
+      $utils: path.join(__dirname, '../src/utils'),
       'vue$': 'vue/dist/vue.esm.js'
     },
     extensions: ['.js', '.vue', '.json', '.css', '.node']

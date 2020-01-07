@@ -5,7 +5,7 @@
       <div class="user-info">
         <div class="header">
           <div class="avatar">
-            <el-avatar :size="50" :src="user.avatar" shape="square">
+            <el-avatar :size="50" :src="user.avatar" shape="square" @click.native="openAvatar">
               <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
             </el-avatar>
           </div>
@@ -50,6 +50,8 @@
 
 <script>
   import { Avatar, Button, Input, MessageBox } from 'element-ui'
+  const remote = require('electron').remote
+  const BrowserWindow = remote.BrowserWindow
   export default {
     name: 'contact-user-detail',
     props: {
@@ -74,6 +76,14 @@
       [Input.name]: Input
     },
     methods: {
+      openAvatar () {
+        this.$message.success('Method execute')
+        const win = new BrowserWindow({
+          height: 600,
+          width: 800
+        })
+        win.loadURL(this.user.avatar)
+      },
       remark () {
         if (this.alias !== '' && this.alias !== this.user.pivot.remark) {
           this.$http.post('api/v1/user/remark-friend', {

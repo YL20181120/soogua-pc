@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="nav-box">
-      <div class="nav-item" :class="{active: getActive('main.message')}" @click="go('main.message')">
+      <div class="nav-item" :class="{active: getActive('main.chat.recents')}" @click="go('main.chat.recents')">
         <span>
           <i class="iconfont icon-message"></i>
         </span>

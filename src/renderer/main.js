@@ -7,6 +7,10 @@ import store from './store'
 
 import { Message } from 'element-ui'
 
+import easemob from '$utils/easemob'
+
+console.log(easemob)
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = http
 Vue.config.productionTip = false

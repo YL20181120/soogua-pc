@@ -1,1 +1,4 @@
 src/renderer/assets/fonts/iconfont/iconfont.js
+src/easemob/node/*.js
+src/easemob/node/modules/*.js
+src/easemob/node/modules/message/*.js
