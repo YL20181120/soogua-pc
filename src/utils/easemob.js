@@ -3,5 +3,6 @@
 const easemob = require('$easemob/node/index')
 console.log('easemob', easemob)
 export default {
-
+  initEmclient () {
+  }
 }
