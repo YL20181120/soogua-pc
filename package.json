@@ -15,9 +15,16 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "pack": "npm run pack:main && npm run pack:renderer",
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
-    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js --display-reasons",
-    "postinstall": "npm run lint:fix && electron-builder install-app-deps"
+    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+    "postinstall": "npm run lint:fix && electron-builder install-app-deps",
+    "build:app": "cross-env NODE_ENV=production node --max_old_space_size=2096 -r babel-register ./node_modules/webpack/bin/webpack --progress --colors --config .electron-vue/webpack.renderer.config.js --display-reasons"
   },
+  "files": [
+    "!easemob"
+  ],
+  "extraResources": [
+    "easemob/*.node"
+  ],
   "build": {
     "productName": "SOOGUA",
     "appId": "com.xuexue.soogua",
@@ -26,6 +33,10 @@
     },
     "files": [
       "dist/electron/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "./dist/electron/addon"
     ],
     "dmg": {
       "contents": [
@@ -92,6 +103,7 @@
     "electron-builder": "^20.19.2",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
+    "electron-node-loader": "^1.2.0",
     "electron-packager": "^14.1.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
@@ -125,6 +137,6 @@
   },
   "optionalDependencies": {
     "bufferutil": "^3.0.0",
-    "utf-8-validate": "^3.0.1"
+    "utf-8-validate": "^5.0.1"
   }
 }

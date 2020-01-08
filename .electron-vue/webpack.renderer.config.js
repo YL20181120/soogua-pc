@@ -22,7 +22,7 @@ if(env === "production"){
 		nodePath = "resources/app.asar.unpacked/__build__";
 	}
 }
-
+console.log(nodePath, 'nodePath')
 /**
  * List of node_modules to include in webpack bundle
  *
@@ -45,33 +45,43 @@ let rendererConfig = {
       {
         test: /\.node$/,
         use: [
-          // {
-          // 	loader: "native-ext-loader",
-          // 	options: {
-          // 		rewritePath: path.resolve(__dirname, "dist")
-          // 	}
-          // },
           {
-            loader: "node-addon-loader",
+            loader: 'electron-node-loader',
             options: {
-              // 加上 basePath 后，最终路径 = output.path join basePath join name
-              // basePath: __dirname,
-              rewritePath: nodePath,
-              // rewritePath: "../Resources/app.asar.unpacked/__build__/",
-              // relativePath: false,
-              name: "addon/[name].[hash:8].[ext]",
+              folder: 'easemob',
+              prod: true
             }
           }
-          // {
-          // 	loader: "file-loader",
-          // 	options: {
-          // 		outputPath: "addon/",
-          // 		name: "[name].[hash:8].[ext]",
-          // 	// publicPath: "../../app.asar.unpacked/addons"
-          // 	}
-          // }
         ]
       },
+      //   use: [
+      //     // {
+      //     // 	loader: "native-ext-loader",
+      //     // 	options: {
+      //     // 		rewritePath: path.resolve(__dirname, "dist")
+      //     // 	}
+      //     // },
+      //     {
+      //       loader: "node-addon-loader",
+      //       options: {
+      //         // 加上 basePath 后，最终路径 = output.path join basePath join name
+      //         basePath: path.resolve(__dirname),
+      //         rewritePath: nodePath,
+      //         // rewritePath: "../Resources/app.asar.unpacked/__build__/",
+      //         // relativePath: false,
+      //         name: "addon/[name].[hash:8].[ext]",
+      //       }
+      //     }
+      //     // {
+      //     // 	loader: "file-loader",
+      //     // 	options: {
+      //     // 		outputPath: "addon/",
+      //     // 		name: "[name].[hash:8].[ext]",
+      //     // 	// publicPath: "../../app.asar.unpacked/addons"
+      //     // 	}
+      //     // }
+      //   ]
+      // },
       {
         test: /\.(js|vue)$/,
         enforce: 'pre',
@@ -173,20 +183,24 @@ let rendererConfig = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.LIB"),
-      force: true,
-      to: "addon/LIBCURL.LIB"
-    }, {
-      from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.DLL"),
-      force: true,
-      to: "addon/LIBCURL.DLL"
-    }, {
-      from: path.resolve(__dirname, "./../src/easemob/easemob/libcrypto.1.0.0.dylib"),
-      force: true,
-      to: "addon/libcrypto.1.0.0.dylib"
-    }]),
-    new webpack.ContextReplacementPlugin(/bindings$/, /^$/)
+    // new CopyWebpackPlugin([{
+    //   from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.LIB"),
+    //   force: true,
+    //   to: "addon/LIBCURL.LIB"
+    // }, {
+    //   from: path.resolve(__dirname, "./../src/easemob/easemob/LIBCURL.DLL"),
+    //   force: true,
+    //   to: "addon/LIBCURL.DLL"
+    // }, {
+    //   from: path.resolve(__dirname, "./../src/easemob/easemob/libcrypto.1.0.0.dylib"),
+    //   force: true,
+    //   to: "addon/libcrypto.1.0.0.dylib"
+    // }]),
+    new webpack.ContextReplacementPlugin(/bindings$/, /^$/),
+    new webpack.DefinePlugin({
+      DEBUG: true,
+      "process.env.NODE_ENV": JSON.stringify("development")
+    })
   ],
   output: {
     filename: '[name].js',
