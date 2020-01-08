@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import http from '../utils/http'
+import http from '$utils/http'
 
 import App from './App'
 import router from './router'

@@ -9,10 +9,10 @@
 </template>
 
 <script>
-  import Nav from '../components/Nav'
-  import Session from '../components/Session'
-  import Message from '../components/Message'
-  import UserInfo from '../components/UserInfo'
+  import Nav from '$components/Nav'
+  import Session from '$components/Session'
+  import Message from '$components/Message'
+  import UserInfo from '$components/UserInfo'
   export default {
     name: 'home-page', // HomePage
     components: {
